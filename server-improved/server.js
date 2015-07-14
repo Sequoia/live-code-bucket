@@ -4,24 +4,39 @@ var url  = require('url');
 //SPOILER ALERT!!
 var port = Number(process.argv[2]) || 1337;
 
+var routes = {
+	'/' : function(req){
+		return {
+			content  : "<h1>Hello world</h1><p>welcome to my homepage</p>",
+			ctype    : "text/html"
+		};
+	},
+	'/fib' : function(req){
+		var parsed = url.parse(req.url,true);
+		var iterations = Number(parsed.query.iterations);
+    	return{
+    		content : JSON.stringify({result: fib(iterations)}),
+    		ctype   : 'application/json'
+    	}
+	}
+}
+
 var server = http.createServer(function (req, res) {
     var parsed = url.parse(req.url,true);
+    var results;
     console.log('request to ', parsed.pathname, parsed.query);
-    res.writeHead(200, {
-        'Content-Type': 'text/plain' //@TODO probably not right...
-    });
-    //if path '/': return "<h1>Hello world</h1><p>welcome to my homepage</p>"
-    if(parsed.pathname === '/'){
-    	res.end("<h1>Hello world</h1><p>welcome to my homepage</p>");
-    }else if(parsed.pathname === '/fib'){
-    	var iterations = Number(parsed.query.iterations);
-    	res.end(JSON.stringify({result: fib(iterations)}));
+
+    if(!routes[parsed.pathname]){ //no such route, 404 & return
+    	res.writeHead(404);
+    	res.end('not found');
+    	return;
     }
-    //if the path is '/fib':
-    	//get 'iterations' from query string, pass to fib module
-    	// domain:port/fib?iterations=10 -->
-    	//return result thus: { result: 55 };
-    res.end('Hello World\n');
+
+    results = routes[parsed.pathname](req);
+    res.writeHead(200, {
+        'Content-Type': results.ctype
+    });
+    res.end(results.content);
     
 });
 
