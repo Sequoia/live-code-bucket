@@ -1,9 +1,12 @@
 var fib  = require('./lib/fibonacci');
 var url  = require('url');
+var fs   = require('fs');
+var mime = require('mime');
+var path = require('path');
 
 var routes = {
 	'/' : function(){
-		return "<h1>Hello world</h1><p>welcome to my homepage</p>";
+        return '<html><head><link rel="stylesheet" href="style.css"></head><body><h1>Hello World!</h1></body></html>';
 	},
 	'/fib' : function(query){
 		var iterations = Number(query.iterations);
@@ -25,10 +28,23 @@ module.exports = function route(req, cb){
             cb(null, results);
         });
     } else {
-    	var err = new Error('not found');
-    	err.code = 404;
-    	process.nextTick(cb.bind(null,err));
-    	//^^ alternative to function(){ cb(err) };
-    	//--> use "bind" to return new function that will always run in same context
+        fs.readFile(
+            path.join(__dirname, 'public', parsed.pathname),
+            { encoding: 'utf8' }, //FIXME this will probably break on images
+            function(fileErr, data) {
+                if (fileErr) {
+                    
+                    err = new Error('Not Found');
+                    err.code = 404;
+                    return cb(err);
+                    
+                } else {
+                    var mimetype = mime.lookup(path.join(__dirname, 'public', parsed.pathname));
+                    cb(null, data, mimetype);
+                    
+                }
+            }
+        );
     }
+
 }
