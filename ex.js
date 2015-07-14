@@ -17,18 +17,39 @@ var server = http.createServer(function handleRequests(req, res) {
     		resolve(function(){ return foo; })
     	})
     	.then(add1plus1)//
-    	.then(promiser)
+    	.then(dbLongOperationPromiser)
+    	.then(somethingElse);
     result === 'undefined';
 });
 
+
+dbLongOperationPromiser
+	.then()
+	.catch()
+	.finally(/*cleanup*/)
 server.listen(3000, '127.0.0.1', function() {
     console.log('The server is up!');
 });
 
 
-function promiser(foo, bar){
+//callback convention:
+/**
+* @param...
+* @param...
+* @param...
+* @param {Function} callback with arguments ({Error}, {Object} data)
+*/
+function operation(x, y, z, ......, done){}
+
+operation("ab",123,function done(err, data){
+
+})
+
+//create a promise
+
+function dbLongOperationPromiser(foo, bar){
 	return new Promise(function(resolve, reject){
-		doAsyncOp([foo, bar],function done(err, result){
+		db.longOperation({id:123},function done(err, result){
 			if(err){
 				reject(err);
 			}
