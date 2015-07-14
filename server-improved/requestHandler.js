@@ -1,19 +1,31 @@
 var router = require('./router');
+var defaultErrorCode = 500;
 
 module.exports = function handleRequest(req, res) {
     var results;
     console.log('request to ', req.url);
 
-    results = router(req);
+    router(req, handleResult);
 
-    if(!results){ //err
-    	res.writeHead(404);
-    	res.end('not found');
-    	return;
+    function handleResult(err, content, ctype){    
+
+        if (err) {            
+            res.writeHead(err.code || defaultErrorCode, {
+                'Content-Type': 'text/plain'
+            });
+            res.end(err.message || 'Server Error');
+        } else {
+            if (!ctype && typeof content === 'string') {
+                ctype = 'text/html';
+            } else if (!ctype) {
+                ctype = 'application/json';
+                content = JSON.stringify(content);
+            }
+            
+            res.writeHead(200, {
+                'Content-Type': ctype
+            });
+            res.end(content);
+        }
     }
-
-    res.writeHead(200, {
-        'Content-Type': results.ctype
-    });
-    res.end(results.content);
 };
