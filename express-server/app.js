@@ -4,14 +4,15 @@ var routes = require('./routes');
 var bodyParser = require('body-parser');
 
 var myApp = express();
+// Parse POST form data...
+myApp.use( bodyParser.urlencoded({ extended: false }) );
+//templates
+myApp.set('views','templates');
+myApp.set('view engine','jade');
 
 //normally you'd save/get users from a database,
 //not an array attached to app :p
 myApp.set('users',[]);
-
-// Parse POST form data...
-myApp.use( bodyParser.urlencoded({ extended: false }) );
-
 
 	//userRouter.js
 	var userRouter   = express.Router();
