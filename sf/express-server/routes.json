@@ -1,4 +1,0 @@
-[
-	{ "route" : "/", "action": "home"},
-	{ "route" : "/fib", "action": "fibonacci"}
-]
