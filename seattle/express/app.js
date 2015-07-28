@@ -6,7 +6,7 @@ var fib = require('./lib/myFib');
 var lastId= 0;
 var users = [];
 
-myApp.set('views', 'views');
+myApp.set('views', 'templates');
 myApp.set('view engine', 'jade');
 
 myApp.use(express.static('static'));
@@ -42,7 +42,7 @@ myApp.get('/fibonacci/:iterations?', function(req, res){
 });
 
 myApp.get('/user',function userForm(req, res, next){
-  res.send('<form method=POST><label>Username: <input type=text name=username /></label><button>create user</button></form>');
+  res.render('userForm');
 });
 
 myApp.post('/user', function createUser(req, res, next) {
@@ -59,17 +59,7 @@ myApp.post('/user', function createUser(req, res, next) {
 //2. add route for /users that returns list of all users as id: username
 //(text/plain, text/html)
 myApp.get('/users', function getAllUsers(req,res){
-  var output = '';
-  output +='<h1>Users:</h1>';
-  output +='<table>';
-  output +='<tr><th>id</th><th>name</th></tr>';
-  users.forEach(function(user){
-    output +='<tr><td>'+user.id+'</td><td>'+user.name+'</td></tr>';
-  });
-  output +='</table>';
-  output +='<h2>create another user:</h2>';
-  output +='<form method=POST action="/user"><label>Username: <input type=text name=username /></label><button>create user</button></form>';
-  res.end(output);
+  res.render('users', {userArray: users});
 });
 
 myApp.use(function(req, res, next){

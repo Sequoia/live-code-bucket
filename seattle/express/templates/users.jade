@@ -1,0 +1,13 @@
+doctype html
+html
+  body
+    h1 Users
+    table
+      tr
+        th id
+        th name
+      each user in userArray
+        tr
+          th= user.id
+          th= user.name
+    include ./includes/createUserForm.jade
