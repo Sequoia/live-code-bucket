@@ -6,6 +6,7 @@ var defaults = {
   contentType: 'text/plain'
 };
 
+var staticHandler = require('./routes/static.js');
 var fourohfourhandler = require('./routes/404.js');
 var routes = {
   '/' : require('./routes/default.js'),
@@ -19,9 +20,9 @@ function handleRequest(req, res) {
   //lookup action
   if(routes[url.pathname]){
     action = routes[url.pathname];
-  }else if(false/*check if pathname starts with static*/){
-    //@todo add static file routing
-    //action = require('routes/static.js');
+  }else if(url.pathname.split('/')[1] === 'static'){
+    console.log('routed to static!!');
+    action = staticHandler;
   } else{
     action = fourohfourhandler;
   }
