@@ -1,0 +1,15 @@
+{
+  "ids": {
+    "ManagerHost": 3,
+    "LoadBalancer": 7
+  },
+  "models": {
+    "ManagerHost": {
+      "b2e5ae2e-5788-4425-815d-3842921cbba9": "{\"id\":\"b2e5ae2e-5788-4425-815d-3842921cbba9\",\"host\":\"appserver.strongloop\",\"port\":8701,\"actions\":[\"delete\",\"edit\"],\"protocol\":\"http\",\"created\":1437079176911,\"error\":{\"message\":\"connect ECONNREFUSED\"},\"errorType\":\"connection\",\"app\":null,\"processes\":null}",
+      "3ac79a69-cad4-49e1-bc57-ea56a5ff6d13": "{\"id\":\"3ac79a69-cad4-49e1-bc57-ea56a5ff6d13\",\"host\":\"192.168.99.100\",\"port\":32772,\"actions\":[\"delete\",\"edit\"],\"protocol\":\"http\",\"created\":1437079205864,\"error\":{\"message\":\"connect ETIMEDOUT\"},\"errorType\":\"unknown\",\"app\":null,\"processes\":null,\"$$hashKey\":\"object:138\",\"isHostProblem\":true}"
+    },
+    "LoadBalancer": {
+      "1": "{\"protocol\":\"http\",\"host\":\"localhost\",\"port\":60070,\"id\":1}"
+    }
+  }
+}
