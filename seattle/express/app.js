@@ -3,9 +3,6 @@ var bodyParser = require('body-parser');
 var myApp = express();
 var fib = require('./lib/myFib');
 
-var lastId= 0;
-var users = [];
-
 myApp.set('views', 'templates');
 myApp.set('view engine', 'jade');
 
@@ -41,26 +38,7 @@ myApp.get('/fibonacci/:iterations?', function(req, res){
   res.json({iterations: iters, result : fib(iters)});
 });
 
-myApp.get('/user',function userForm(req, res, next){
-  res.render('userForm');
-});
-
-myApp.post('/user', function createUser(req, res, next) {
-  //1. 
-  //add user object to users array
-  //{id : ++lastId, name: 'username'}
-  users.push({
-    id: ++lastId,
-    name: req.body.username
-  });
-  res.redirect('/users');
-});
-
-//2. add route for /users that returns list of all users as id: username
-//(text/plain, text/html)
-myApp.get('/users', function getAllUsers(req,res){
-  res.render('users', {userArray: users});
-});
+myApp.use('/user', require('./userRouter'));
 
 myApp.use(function(req, res, next){
   res.status(404);
