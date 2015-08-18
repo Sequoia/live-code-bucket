@@ -1,0 +1,33 @@
+{
+  "name": "denver-strongloop",
+  "version": "0.0.1",
+  "dependencies": {
+    "mathjs": {
+      "version": "2.1.1",
+      "from": "mathjs@2.1.1",
+      "resolved": "https://registry.npmjs.org/mathjs/-/mathjs-2.1.1.tgz",
+      "dependencies": {
+        "decimal.js": {
+          "version": "4.0.2",
+          "from": "decimal.js@>=4.0.2 <5.0.0",
+          "resolved": "https://registry.npmjs.org/decimal.js/-/decimal.js-4.0.2.tgz"
+        },
+        "fraction.js": {
+          "version": "2.5.0",
+          "from": "fraction.js@>=2.0.0 <3.0.0",
+          "resolved": "https://registry.npmjs.org/fraction.js/-/fraction.js-2.5.0.tgz"
+        },
+        "tiny-emitter": {
+          "version": "1.0.0",
+          "from": "tiny-emitter@>=1.0.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/tiny-emitter/-/tiny-emitter-1.0.0.tgz"
+        },
+        "typed-function": {
+          "version": "0.10.1",
+          "from": "typed-function@>=0.10.1 <0.11.0",
+          "resolved": "https://registry.npmjs.org/typed-function/-/typed-function-0.10.1.tgz"
+        }
+      }
+    }
+  }
+}

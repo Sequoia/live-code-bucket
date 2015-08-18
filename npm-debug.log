@@ -1,0 +1,15 @@
+25 verbose stack Error: Callback called more than once.
+25 verbose stack     at errorHandler (/usr/local/lib/node_modules/npm/lib/utils/error-handler.js:108:16)
+25 verbose stack     at /usr/local/lib/node_modules/npm/lib/search.js:56:5
+25 verbose stack     at /usr/local/lib/node_modules/npm/lib/search.js:72:14
+25 verbose stack     at /usr/local/lib/node_modules/npm/lib/cache/update-index.js:95:11
+25 verbose stack     at FSReqWrap.oncomplete (fs.js:99:15)
+26 verbose cwd /Users/sequoia/strongloop/unsorted/live
+27 error Darwin 14.4.0
+28 error argv "node" "/usr/local/bin/npm" "search" "math.js"
+29 error node v0.12.0
+30 error npm  v2.5.1
+31 error Callback called more than once.
+32 error If you need help, you may report this error at:
+32 error     <http://github.com/npm/npm/issues>
+33 verbose exit [ 1, true ]
