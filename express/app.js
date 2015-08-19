@@ -64,7 +64,7 @@ myApp.use(function logErorr(err, req, res, next){
 })
 
 .use(function catchallHandler(err, req, res, next){
-  res.json({message: 'something bad', code: 5000, extra : req.foo});
+  res.json({message: err.message, code: 5000, extra : req.foo});
 });
 
 myApp.listen(8080, function(){
