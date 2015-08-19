@@ -43,6 +43,13 @@ myApp.get('/', function handleRoot(req, res, next) {
   res.send('Hello World!');
 });
 
+myApp.get('/fib', function(req, res, next){
+  //read ?iterations=n
+  //if !n, n = 10
+  //call fib(n)
+  //return {iterations: n, result : ???}
+});
+
 myApp.get('/users', function handleroot(req, res, next) {
   if(!req.xhr){ //render html
     var usersWithIds = users.map(function(user, index){
@@ -59,12 +66,20 @@ myApp.get('/users', function handleroot(req, res, next) {
 myApp.get('/users/:id', function handleRoot(req, res, next) {
   var id = parseInt(req.params.id);
   if(id > users.length -1){
+    console.error(id, users.length -1);
     var e = new Error('User not found');
     e.code = 404;
     next(e);
   }
+  var user = users[id];
   console.log('user %d requested', id);
-  res.json(users[id]);
+
+  if(!req.xhr){ //render html
+    user.id = id;
+    res.render('user',user);
+  }else{ //send json
+    res.json(user);
+  }
 });
 
 myApp.post('/users', function createUser (req, res, next){
