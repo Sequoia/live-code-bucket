@@ -2,11 +2,12 @@
 // in app.js
 'use strict';
 
-var express = require('express');
+var express    = require('express');
+var fib        = require('../mymath').fib;
 var bodyParser = require('body-parser');
-var randomW = require('random-words');
-var path = require('path');
-var myApp = express();
+var randomW    = require('random-words');
+var path       = require('path');
+var myApp      = express();
 
 require('./config')(myApp);
 
@@ -44,10 +45,16 @@ myApp.get('/', function handleRoot(req, res, next) {
 });
 
 myApp.get('/fib', function(req, res, next){
-  //read ?iterations=n
-  //if !n, n = 10
-  //call fib(n)
-  //return {iterations: n, result : ???}
+  var defaultIters = 10;
+  console.log('getting fib');
+  var iters = parseInt(req.query.iterations) || defaultIters;
+  console.time('fib ' + iters);
+  var result = fib(iters);
+  console.timeEnd('fib ' + iters);
+  res.json({
+    iterations: iters,
+    result : result
+  });
 });
 
 myApp.get('/users', function handleroot(req, res, next) {
