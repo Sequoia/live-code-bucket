@@ -47,7 +47,7 @@ myApp.get('/users', function handleroot(req, res, next) {
 myApp.get('/users/:id', function handleRoot(req, res, next) {
   var id = parseInt(req.params.id);
   if(id > users.length -1){
-    var e = new Error('Not found');
+    var e = new Error('User not found');
     e.code = 404;
     next(e);
   }
@@ -75,17 +75,13 @@ myApp.delete('/users/:id', function deleteUser(req, res){
 //
 
 //No routes were matched :(
-myApp.get(function notFoundRoute(req,res,next){
+myApp.use(function notFoundRoute(req,res,next){
   var e = new Error('Not found');
   e.code = 404;
   next(e);
 });
 
-//notFoundHandler
-//  ONLY operate on code =404
-//  respond with json or redirect per your preference
-//  pass error if not 404
-
+///// ERROR HANDLERS /////
 myApp.use(function logErorr(err, req, res, next){
   console.error(err);
   next(err);
@@ -97,6 +93,15 @@ myApp.use(function logErorr(err, req, res, next){
   }
   res.json({message: err.message, code: err.code, extra : req.foo});
 })
+.use(function handle404(err, req, res, next){
+  throw new Error('alskdjflkasjdklfja');
+  if(err.code !== 404){
+    next(err);
+    return;
+  }
+  res.json({message: err.message, code: err.code});
+})
+
 .use(function catchallHandler(err, req, res, next){
   res.json({message: 'something bad', code: 5000, extra : req.foo});
 });
