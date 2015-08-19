@@ -3,7 +3,6 @@
 'use strict';
 
 var express    = require('express');
-var fib        = require('../mymath').fib;
 var bodyParser = require('body-parser');
 var randomW    = require('random-words');
 var path       = require('path');
@@ -33,80 +32,9 @@ myApp.use(function setPoweredBy(req,res,next){
   next();
 });
 
-myApp.get('/', function handleRoot(req, res, next) {
-  console.log('word>>>>>>%s', req.foo);
-  if(Math.random() > 0.5){
-    var e = new Error('Something RaNdOm happened!!');
-    e.code = 504;
-    next(e);
-    return;
-  }
-  res.send('Hello World!');
-});
-
-myApp.get('/fib', function(req, res, next){
-  var defaultIters = 10;
-  console.log('getting fib');
-  var iters = parseInt(req.query.iterations) || defaultIters;
-  console.time('fib ' + iters);
-  var result = fib(iters);
-  console.timeEnd('fib ' + iters);
-  res.json({
-    iterations: iters,
-    result : result
-  });
-});
-
-myApp.get('/users', function handleroot(req, res, next) {
-  if(!req.xhr){ //render html
-    var usersWithIds = users.map(function(user, index){
-      user.id = index;
-      return user;
-    });
-    console.log(usersWithIds);
-    res.render('users',{ users: usersWithIds});
-  }else{ //send json
-    res.json(users);
-  }
-});
-
-myApp.get('/users/:id', function handleRoot(req, res, next) {
-  var id = parseInt(req.params.id);
-  if(id > users.length -1){
-    console.error(id, users.length -1);
-    var e = new Error('User not found');
-    e.code = 404;
-    next(e);
-  }
-  var user = users[id];
-  console.log('user %d requested', id);
-
-  if(!req.xhr){ //render html
-    user.id = id;
-    res.render('user',user);
-  }else{ //send json
-    res.json(user);
-  }
-});
-
-myApp.post('/users', function createUser (req, res, next){
-  //create a user
-  console.log('new user', req.body);
-  users.push(req.body);
-  res.redirect('/users/' + (users.length - 1));
-});
-
-myApp.delete('/users/:id', function deleteUser(req, res){
-  var id = parseInt(req.params.id);
-  if(isNaN(id)){
-    res.status(400).json({message: 'bad user id'});
-    return;
-  }
-  users.splice(id, 1);
-  res.json({message : 'success'});
-});
-//ouput success message ^
-//
+myApp.use('/', require('./routers/root'));
+myApp.use('/fib', require('./routers/fib'));
+myApp.use('/users', require('./routers/users'));
 
 //No routes were matched :(
 myApp.use(function notFoundRoute(req,res,next){
