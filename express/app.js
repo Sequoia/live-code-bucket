@@ -8,11 +8,18 @@ var randomW = require('random-words');
 var path = require('path');
 var myApp = express();
 
+require('./config')(myApp);
+
+var staticPath = path.join(__dirname, '..', 'public');
+/////CONFIGURATION///////
+
 var users = [
   { first : 'sequoia', last : 'mcdowell' },
   { first : 'ty', last : 'cobb' },
   { first : 'taylor', last : 'swift' }
 ];
+
+myApp.use(express.static(staticPath));
 
 myApp.use(bodyParser.urlencoded({extended : false}));
 myApp.use(function(req,res,next){
@@ -36,12 +43,17 @@ myApp.get('/', function handleRoot(req, res, next) {
   res.send('Hello World!');
 });
 
-myApp.get('/userform', function handleroot(req, res, next) {
-  res.sendFile(path.join(__dirname, './userform.html'));
-});
-
 myApp.get('/users', function handleroot(req, res, next) {
-  res.json(users);
+  if(!req.xhr){ //render html
+    var usersWithIds = users.map(function(user, index){
+      user.id = index;
+      return user;
+    });
+    console.log(usersWithIds);
+    res.render('users',{ users: usersWithIds});
+  }else{ //send json
+    res.json(users);
+  }
 });
 
 myApp.get('/users/:id', function handleRoot(req, res, next) {
@@ -94,7 +106,6 @@ myApp.use(function logErorr(err, req, res, next){
   res.json({message: err.message, code: err.code, extra : req.foo});
 })
 .use(function handle404(err, req, res, next){
-  throw new Error('alskdjflkasjdklfja');
   if(err.code !== 404){
     next(err);
     return;

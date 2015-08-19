@@ -1,0 +1,10 @@
+html
+  body
+    table
+      tr
+        th id
+        th name
+      each user in users
+        tr
+          td #{user.id}
+          td #{user.first} #{user.last}
